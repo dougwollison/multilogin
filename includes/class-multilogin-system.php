@@ -225,10 +225,6 @@ final class System extends Handler {
 			return;
 		}
 
-		if ( session_id() == '' ) {
-			session_start();
-		}
-
 		// Setup stuff
 		self::add_hook( 'plugins_loaded', 'load_textdomain', 10, 0 );
 
@@ -256,6 +252,12 @@ final class System extends Handler {
 		self::add_hook( 'admin_post_multilogin-logout', 'verify_logout_token', 10, 0 );
 		self::add_hook( 'admin_post_nopriv_multilogin-logout', 'verify_logout_token', 10, 0 );
 		self::add_hook( 'login_header', 'print_logout_notice', 10, 0 );
+
+		// Session Handling
+		self::add_hook( 'login_init', 'start_session', 10, 0 );
+		self::add_hook( 'admin_init', 'start_session', 10, 0 );
+		self::add_hook( 'login_footer', 'end_session', 10, 0 );
+		self::add_hook( 'admin_footer', 'end_session', 10, 0 );
 	}
 
 	// =========================
@@ -465,5 +467,32 @@ final class System extends Handler {
 		wp_logout();
 		header( 'HTTP/1.1 200 OK' );
 		die( '/* logged out on ' . COOKIE_DOMAIN . ' */' );
+	}
+
+	// =========================
+	// ! Session Handling
+	// =========================
+
+	/**
+	 * Start the session if not already started.
+	 *
+	 * @since 1.0.0
+	 */
+	public static function start_session() {
+		// Don't start session for ajax requests
+		if ( ! defined( 'DOING_AJAX' ) && session_status() == PHP_SESSION_NONE ) {
+		    session_start();
+		}
+	}
+
+	/**
+	 * If a session is active, write and close it.
+	 *
+	 * @since 1.0.0
+	 */
+	public static function end_session() {
+		if ( session_status() == PHP_SESSION_ACTIVE ) {
+			session_write_close();
+		}
 	}
 }
