@@ -169,6 +169,7 @@ final class System extends Handler {
 		// Fail if no token is present
 		if ( ! isset( $_REQUEST['token'] ) ) {
 			header( 'HTTP/1.1 401 Unauthorized' );
+			header( 'Content-Type: text/javascript' );
 			die( "/* remote $type token missing */" );
 		}
 
@@ -186,24 +187,28 @@ final class System extends Handler {
 		// Fail if the data could not be found
 		if ( ! $data ) {
 			header( 'HTTP/1.1 401 Unauthorized' );
+			header( 'Content-Type: text/javascript' );
 			die( "/* remote $type data not found */" );
 		}
 
 		// If specified, fail if the user does not exist or does not belong to this site
 		if ( isset( $data['user'] ) && ( ! get_userdata( $data['user'] ) || ! is_user_member_of_blog( $data['user'] ) ) ) {
 			header( 'HTTP/1.1 401 Unauthorized' );
+			header( 'Content-Type: text/javascript' );
 			die( "/* user not authorized for " . COOKIE_DOMAIN . " */" );
 		}
 
 		// Fail if the secret is missing
 		if ( ! isset( $data['secret'] ) ) {
 			header( 'HTTP/1.1 401 Unauthorized' );
+			header( 'Content-Type: text/javascript' );
 			die( "/* remote $type secret not found */" );
 		}
 
 		// Fail if the secret doesn't pass
 		if ( ! wp_check_password( $secret . $visitor_id, $data['secret'] ) ) {
 			header( 'HTTP/1.1 401 Unauthorized' );
+			header( 'Content-Type: text/javascript' );
 			die( "/* $type token invalid */" );
 		}
 
@@ -415,6 +420,7 @@ final class System extends Handler {
 
 		wp_set_auth_cookie( $data['user'], $data['remember'] );
 		header( 'HTTP/1.1 200 OK' );
+		header( 'Content-Type: text/javascript' );
 		die( '/* logged in on ' . COOKIE_DOMAIN . ' */' );
 	}
 
@@ -466,6 +472,7 @@ final class System extends Handler {
 		// Logout the user
 		wp_logout();
 		header( 'HTTP/1.1 200 OK' );
+		header( 'Content-Type: text/javascript' );
 		die( '/* logged out on ' . COOKIE_DOMAIN . ' */' );
 	}
 
