@@ -1,12 +1,14 @@
 # MultiLogin
 
-Contributors: dougwollison
-Tags: Cross-Domain login solution for multisite installations.
-Requires at least: 4.5
-Tested up to: 5.0.2
-Stable tag: 1.0.0
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+| | |
+|-|-|
+Contributors      | dougwollison
+Tags              | Cross-Domain login solution for multisite installations.
+Requires at least | 4.5
+Tested up to      | 5.0.2
+Stable tag        | 1.0.0
+License           | GPLv2 or later
+License URI       | http://www.gnu.org/licenses/gpl-2.0.html
 
 Cross-Domain login solution for multisite installations. Formerly a feature of Domainer.
 
